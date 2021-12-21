@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Microsoft.EntityFrameworkCore;
+using Persistence.Configurations;
 
 namespace Persistence
 {
@@ -11,5 +12,11 @@ namespace Persistence
         }
 
         public virtual DbSet<Person> People { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new PersonConfiguration());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }
