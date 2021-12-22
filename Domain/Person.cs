@@ -6,10 +6,10 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
-        public Geneder Geneder { get; set; }
+        public Gender Gender { get; set; }
     }
 
-    public enum Geneder
+    public enum Gender
     {
         Male = 1,
         Female = 2
