@@ -54,6 +54,11 @@ namespace WebFramework.Api
             return new ApiResult<TData>(true, ResultCode.Success, null);
         }
 
+        public static implicit operator ApiResult<TData>(OkObjectResult result)
+        {
+            return new ApiResult<TData>(true, ResultCode.Success, (TData)result.Value);
+        }
+
         public static implicit operator ApiResult<TData>(BadRequestResult result)
         {
             return new ApiResult<TData>(false, ResultCode.BadRequest, null);

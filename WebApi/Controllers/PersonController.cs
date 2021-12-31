@@ -1,6 +1,7 @@
 ﻿using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
+using WebFramework.Api;
 
 namespace WebApi.Controllers
 {
@@ -16,19 +17,19 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<List<Person>> Get()
+        public async Task<ApiResult<List<Person>>> Get()
         {
             return _context.People.ToList();
         }
 
         [HttpGet("{id:int}")]
-        public ActionResult<Person> Get(int id)
+        public ApiResult<Person> Get(int id)
         {
             return _context.People.SingleOrDefault(p => p.Id == id);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Person person)
+        public async Task<ApiResult<Person>> Create(Person person)
         {
             await _context.People.AddAsync(person);
             await _context.SaveChangesAsync();
@@ -36,7 +37,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(Person person)
+        public async Task<ApiResult> Update(Person person)
         {
             var personInDb = await _context.People.FindAsync(person.Id);
             if (personInDb == null)
@@ -50,7 +51,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ApiResult> Delete(int id)
         {
             var personInDb = await _context.People.FindAsync(id);
             if (personInDb == null)
