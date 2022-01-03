@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
 using WebFramework.Api;
+using WebFramework.Filters;
 
 namespace WebApi.Controllers
 {
@@ -17,19 +18,24 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResult<List<Person>>> Get()
+        [ApiResultFilter]
+        public async Task<ActionResult<List<Person>>> Get()
         {
-            return _context.People.ToList();
+            var people = _context.People.ToList();
+            return Ok(people);
         }
 
         [HttpGet("{id:int}")]
-        public ApiResult<Person> Get(int id)
+        [ApiResultFilter]
+        public ActionResult<Person> Get(int id)
         {
-            return _context.People.SingleOrDefault(p => p.Id == id);
+            var person = _context.People.SingleOrDefault(p => p.Id == id);
+            return Ok(person);
         }
 
         [HttpPost]
-        public async Task<ApiResult<Person>> Create(Person person)
+        [ApiResultFilter]
+        public async Task<ActionResult<Person>> Create(Person person)
         {
             await _context.People.AddAsync(person);
             await _context.SaveChangesAsync();
@@ -37,7 +43,8 @@ namespace WebApi.Controllers
         }
 
         [HttpPut]
-        public async Task<ApiResult> Update(Person person)
+        [ApiResultFilter]
+        public async Task<ActionResult> Update(Person person)
         {
             var personInDb = await _context.People.FindAsync(person.Id);
             if (personInDb == null)
@@ -51,7 +58,8 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ApiResult> Delete(int id)
+        [ApiResultFilter]
+        public async Task<ActionResult> Delete(int id)
         {
             var personInDb = await _context.People.FindAsync(id);
             if (personInDb == null)
